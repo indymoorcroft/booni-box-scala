@@ -2,7 +2,7 @@ package product
 
 import java.sql.Timestamp
 
-case class ProductModel(
+case class Product(
                          id: Option[Long] = None,
                          name: String,
                          slug: String,
