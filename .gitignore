@@ -27,3 +27,5 @@ logs/
 *.log
 *.pid
 *.seed
+
+application.conf
