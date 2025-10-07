@@ -1,0 +1,26 @@
+GET     /       controllers.HomeController.index
+
+# Categories
+
+GET /categories category.CategoryController.getAllCategories
+
+GET /categories/:id category.CategoryController.getCategoryById(id: Long)
+
+POST /categories category.CategoryController.create
+
+PATCH /categories/:id category.CategoryController.updateById(id: Long)
+
+DELETE /categories/:id category.CategoryController.deleteById(id: Long)
+
+
+# Todos
+
+GET /todos todo.TodoController.getAllTodos
+
+GET /todos/:id todo.TodoController.getTodoById(id: Long)
+
+POST /todos todo.TodoController.create
+
+PATCH /todos/:id todo.TodoController.updateById(id: Long)
+
+DELETE /todos/:id todo.TodoController.deleteById(id: Long)
