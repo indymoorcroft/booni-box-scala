@@ -2,3 +2,5 @@
 GET     /products product.ProductController.getAllProducts
 
 GET     /products/:id product.ProductController.getProductById(id: Long)
+
+GET     /products/s/:slug product.ProductController.getProductBySlug(slug: String)

@@ -20,4 +20,11 @@ class ProductController @Inject()(cc: ControllerComponents, productService: Prod
       case Left(error) => error.toResult
     }
   }
+
+  def getProductBySlug(slug: String): Action[AnyContent] = Action.async {
+    productService.getProductBySlug(slug).map {
+      case Right(product) => Ok(Json.toJson(product))
+      case Left(error) => error.toResult
+    }
+  }
 }
