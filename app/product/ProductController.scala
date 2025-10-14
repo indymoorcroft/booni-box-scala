@@ -13,4 +13,11 @@ class ProductController @Inject()(cc: ControllerComponents, productService: Prod
       Ok(Json.toJson(products))
     }
   }
+
+  def getProductById(id: Long): Action[AnyContent] = Action.async {
+    productService.getProductById(id).map {
+      case Right(product) => Ok(Json.toJson(product))
+      case Left(error) => error.toResult
+    }
+  }
 }
