@@ -24,4 +24,9 @@ class ProductRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impl
   def findBySlug(slug: String): Future[Option[Product]] = {
     db.run(products.filter(_.slug === slug).result.headOption)
   }
+
+  def create(product: Product): Future[Product] = {
+    val insertQuery = products returning products.map(_.id) into ((product, id) => product.copy(id = Some(id)))
+    db.run(insertQuery += product)
+  }
 }
