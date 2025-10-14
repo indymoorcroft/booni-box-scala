@@ -18,4 +18,11 @@ class ProductService @Inject()(productRepository: ProductRepository)(implicit ec
       case None => Left(ApiError.NotFound(s"Product with id $id not found"))
     }
   }
+
+  def getProductBySlug(slug: String): Future[Either[ApiError, ProductResponse]] = {
+    productRepository.findBySlug(slug).map {
+      case Some(product) => Right(ProductResponse.fromModel(product))
+      case None => Left(ApiError.NotFound(s"Product $slug not found"))
+    }
+  }
 }

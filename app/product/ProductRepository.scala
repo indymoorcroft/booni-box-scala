@@ -20,4 +20,8 @@ class ProductRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impl
   def findById(id: Long): Future[Option[Product]] = {
     db.run(products.filter(_.id === id).result.headOption)
   }
+
+  def findBySlug(slug: String): Future[Option[Product]] = {
+    db.run(products.filter(_.slug === slug).result.headOption)
+  }
 }
