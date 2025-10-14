@@ -1,1 +1,4 @@
+# Products
 GET     /products product.ProductController.getAllProducts
+
+GET     /products/:id product.ProductController.getProductById(id: Long)
