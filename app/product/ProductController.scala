@@ -1,9 +1,11 @@
 package product
 
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
+import utils.ApiError
+
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ProductController @Inject()(cc: ControllerComponents, productService: ProductService)(implicit ec: ExecutionContext) extends AbstractController(cc){
@@ -25,6 +27,18 @@ class ProductController @Inject()(cc: ControllerComponents, productService: Prod
     productService.getProductBySlug(slug).map {
       case Right(product) => Ok(Json.toJson(product))
       case Left(error) => error.toResult
+    }
+  }
+
+  def create: Action[JsValue] = Action.async(parse.json) { request =>
+    request.body.validate[CreateProductDto] match {
+      case JsSuccess(dto, _) =>
+        productService.createProduct(dto).map {
+          case Right(response) => Created(Json.toJson(response))
+          case Left(error) => error.toResult
+        }
+      case e: JsError =>
+        Future.successful(ApiError.InvalidJson(e).toResult)
     }
   }
 }
