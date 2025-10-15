@@ -84,4 +84,11 @@ class ProductService @Inject()(productRepository: ProductRepository)(implicit ec
       }
     }
   }
+
+  def deleteProductById(id: Long): Future[Either[ApiError, Unit]] = {
+    productRepository.delete(id).map { rowsAffected =>
+      if(rowsAffected > 0) Right(())
+      else Left(ApiError.NotFound(s"Product with id $id not found"))
+    }
+  }
 }
