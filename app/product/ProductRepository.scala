@@ -37,4 +37,8 @@ class ProductRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impl
 
     db.run(query).map(_ => product)
   }
+
+  def delete(id: Long): Future[Int] = {
+    db.run(products.filter(_.id === id).delete)
+  }
 }

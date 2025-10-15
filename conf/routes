@@ -8,3 +8,5 @@ GET     /products/s/:slug product.ProductController.getProductBySlug(slug: Strin
 POST    /products product.ProductController.create
 
 PATCH   /products/:id product.ProductController.updateById(id: Long)
+
+DELETE  /products/:id product.ProductController.deleteById(id: Long)

@@ -51,4 +51,11 @@ class ProductController @Inject()(cc: ControllerComponents, productService: Prod
       }
     )
   }
+
+  def deleteById(id: Long): Action[AnyContent] = Action.async {
+    productService.deleteProductById(id).map {
+      case Right(_) => NoContent
+      case Left(error) => error.toResult
+    }
+  }
 }
