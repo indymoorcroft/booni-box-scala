@@ -29,4 +29,12 @@ class ProductRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impl
     val insertQuery = products returning products.map(_.id) into ((product, id) => product.copy(id = Some(id)))
     db.run(insertQuery += product)
   }
+
+  def update(product: Product): Future[Product] = {
+    val query = products.filter(_.id === product.id.get)
+      .map(p => (p.name, p.slug, p.description, p.price, p.currency, p.stock, p.active))
+      .update((product.name, product.slug, product.description, product.price, product.currency, product.stock, product.active))
+
+    db.run(query).map(_ => product)
+  }
 }

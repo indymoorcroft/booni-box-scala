@@ -11,4 +11,12 @@ object ProductValidator extends Validator {
       isNonBlankIfDefined("currency", dto.currency),
     ).flatten.toMap
   }
+
+  def validatePatch(dto: UpdateProductDto): Map[String, String] = {
+    List(
+      isNonBlankIfDefined("name", dto.name),
+      isNonBlankIfDefined("description", dto.description),
+      isNonBlankIfDefined("price", dto.currency),
+    ).flatten.toMap
+  }
 }

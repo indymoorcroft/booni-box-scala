@@ -18,3 +18,9 @@ case class CreateProductDto(name: String, description: Option[String], price: Bi
 object CreateProductDto {
   implicit val reads: Reads[CreateProductDto] = Json.reads[CreateProductDto]
 }
+
+case class UpdateProductDto(name: Option[String], description: Option[String], price: Option[BigDecimal], currency: Option[String], stock: Option[Int], active: Option[Boolean])
+
+object UpdateProductDto {
+  implicit val reads: Reads[UpdateProductDto] = Json.reads[UpdateProductDto]
+}

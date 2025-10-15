@@ -57,4 +57,31 @@ class ProductService @Inject()(productRepository: ProductRepository)(implicit ec
       productRepository.create(product).map(saved => Right(ProductResponse.fromModel(saved)))
     }
   }
+
+  def updateProductById(id: Long, data: UpdateProductDto): Future[Either[ApiError, ProductResponse]] = {
+    val errors = ProductValidator.validatePatch(data)
+
+    if(errors.nonEmpty) {
+      Future.successful(Left(ApiError.ValidationError(errors)))
+    } else {
+      productRepository.findById(id).flatMap {
+        case None => Future.successful(Left(ApiError.NotFound(s"Product with id $id not found")))
+        case Some(existing) =>
+          val slug = data.name.filter(_.nonEmpty).map(slugify).getOrElse(existing.slug)
+
+          val updated = existing.copy(
+            name = data.name.map(_.trim).getOrElse(existing.name),
+            slug = slug,
+            description = data.description.map(_.trim).filter(_.nonEmpty).orElse(existing.description),
+            price = data.price.getOrElse(existing.price),
+            currency = data.currency.map(_.trim).getOrElse(existing.currency),
+            stock = data.stock.getOrElse(existing.stock),
+            active = data.active.getOrElse(existing.active),
+            updatedAt = nowTs()
+          )
+
+          productRepository.update(updated).map(p => Right(ProductResponse.fromModel(p)))
+      }
+    }
+  }
 }

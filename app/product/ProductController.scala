@@ -41,4 +41,14 @@ class ProductController @Inject()(cc: ControllerComponents, productService: Prod
         Future.successful(ApiError.InvalidJson(e).toResult)
     }
   }
+
+  def updateById(id: Long): Action[JsValue] = Action.async(parse.json) { request =>
+    request.body.validate[UpdateProductDto].fold(
+      errors => Future.successful(ApiError.InvalidJson(JsError(errors)).toResult),
+      dto => productService.updateProductById(id, dto).map {
+        case Right(response) => Ok(Json.toJson(response))
+        case Left(error) => error.toResult
+      }
+    )
+  }
 }

@@ -6,3 +6,5 @@ GET     /products/:id product.ProductController.getProductById(id: Long)
 GET     /products/s/:slug product.ProductController.getProductBySlug(slug: String)
 
 POST    /products product.ProductController.create
+
+PATCH   /products/:id product.ProductController.updateById(id: Long)
